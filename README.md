@@ -29,7 +29,7 @@ An expectation that is fulfilled when a publisher emits a value that matches a c
 let publisherExpectation = PublisherValueExpectation(arrayPublisher) { $0.contains(value) }
 ```
 
-* It has some convenience inits to wait for expected values:
+* Wait for expected values:
 ```swift
 let publisherExpectation = PublisherValueExpectation(stringPublisher, expectedValue: "Got it")
 ```
