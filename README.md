@@ -89,7 +89,8 @@ Thanks to Combine we can adapt the publisher to do many things while keeping the
 let publisherExpectation = PublisherValueExpectation(publisher.collect(3), expectedValue: [1,2,3])
 ```
 
-* Expect the last emitted value:
+* Expect the first/last emitted value:
 ```swift
+let publisherExpectation = PublisherValueExpectation(publisher.first(), expectedValue: 1)
 let publisherExpectation = PublisherValueExpectation(publisher.last(), expectedValue: 5)
 ```
