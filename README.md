@@ -91,6 +91,6 @@ let publisherExpectation = PublisherValueExpectation(publisher.collect(3), expec
 
 * Expect the first/last emitted value:
 ```swift
-let publisherExpectation = PublisherValueExpectation(publisher.first(), expectedValue: 1)
-let publisherExpectation = PublisherValueExpectation(publisher.last(), expectedValue: 5)
+let publisherExpectation1 = PublisherValueExpectation(publisher.first(), expectedValue: 1)
+let publisherExpectation2 = PublisherValueExpectation(publisher.last(), expectedValue: 5)
 ```
