@@ -82,9 +82,14 @@ let publisherExpectation = PublisherFailureExpectation(publisher) { error in
 
 ## Tips
 
-Thanks to Combine we can adapt the publisher to do things like:
+Thanks to Combine we can adapt the publisher to do many things while keeping the test readability:
 
 * Expect many values to be emitted:
 ```swift
 let publisherExpectation = PublisherValueExpectation(publisher.collect(3), expectedValue: [1,2,3])
+```
 
+* Expect the last emitted value:
+```swift
+let publisherExpectation = PublisherValueExpectation(publisher.last(), expectedValue: 5)
+```
