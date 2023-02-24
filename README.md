@@ -18,20 +18,36 @@ publisher.sink { _ in
 wait(for: [expectation], timeout: 1)
 ```
 
-The PublisherExpectations is a set of 3 XCTestExpectation that allows declaring expectations for publisher events in a clear and concise manner. They inherit from XCTestExpectation so they can be used in the `wait(for: [expectations])` call as any other expectation. 
+Another tempting approach would be using `XCTNSPredicateExpectation` like:
+
+```swift
+let expectation = XCTNSPredicateExpectation(predicate: NSPredicate { _,_ in
+    return viewModel.isLoaded
+}, object: viewModel)
+```
+
+The problem with `XCTNSPredicateExpectation` is that is quite slow and best suited for UI tests. This is because it uses some kind of polling mechanism that adds a significant delay of 1 second minimum before the expectation is fulfilled. So it's better not to follow this path in unit tests.
+
+## Description
+
+The PublisherExpectations is a set of 3 XCTestExpectation that allows declaring expectations for publisher events in a clear and concise manner. They inherit from XCTestExpectation so they can be used in the `wait(for: [expectations])` call as with any other expectation. 
+
+* `PublisherValueExpectation`: An expectation that is fulfilled when a publisher emits a value that matches a certain condition.
+* `PublisherFinishedExpectation`: An expectation that is fulfilled when a publisher completes successfully.
+* `PublisherFailureExpectation`: An expectation that is fulfilled when a publisher completes with a failure.
 
 ## Usage
 
 ### PublisherValueExpectation
 
-An expectation that is fulfilled when a publisher emits a value that matches a certain condition.
-```swift
-let publisherExpectation = PublisherValueExpectation(arrayPublisher) { $0.contains(value) }
-```
-
-* Wait for expected values:
+* Wait for an expected value:
 ```swift
 let publisherExpectation = PublisherValueExpectation(stringPublisher, expectedValue: "Got it")
+```
+
+* Wait for a value that matches a condition:
+```swift
+let publisherExpectation = PublisherValueExpectation(arrayPublisher) { $0.contains(value) }
 ```
 
 * Works with `@Published` property wrappers as well:
@@ -43,8 +59,6 @@ let publisherExpectation = PublisherValueExpectation(viewModel.$keywords) { $0.c
 ```
 
 ### PublisherFinishedExpectation
-
-An expectation that is fulfilled when a publisher completes successfully.
 
 * Waiting for the publisher to finish:
 ```swift
@@ -64,8 +78,6 @@ let publisherExpectation = PublisherFinishedExpectation(arrayPublisher) { array 
 ```
 
 ### PublisherFailureExpectation
-
-An expectation that is fulfilled when a publisher completes with a failure.
 
 * Expecting a failure:
 ```swift
