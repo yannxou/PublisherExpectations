@@ -92,6 +92,12 @@ let publisherExpectation = PublisherFailureExpectation(publisher) { error in
 }
 ```
 
+## Installation
+
+1. From the File menu, select Add Packages...
+2. Enter package repository URL: https://github.com/yannxou/PublisherExpectations
+3. Confirm the version and let Xcode resolve the package
+
 ## Tips
 
 Thanks to Combine we can adapt the publisher to check many things while keeping the test readability:
