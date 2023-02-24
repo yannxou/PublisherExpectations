@@ -9,12 +9,12 @@ import Combine
 import XCTest
 
 /// An expectation that is fulfilled when a publisher emits a value that matches a certain condition.
-public final class PublisherValueExpectation<Output, Failure: Error>: XCTestExpectation {
+public final class PublisherValueExpectation<P: Publisher>: XCTestExpectation {
     private var cancellable: AnyCancellable?
 
     /// Initializes a PublisherValueExpectation that is fulfilled when the publisher emits a value that matches the condition.
-    public init(_ publisher: any Publisher<Output, Failure>,
-                condition: @escaping (Output) -> Bool,
+    public init(_ publisher: P,
+                condition: @escaping (P.Output) -> Bool,
                 description expectationDescription: String? = nil)
     {
         let description = expectationDescription ?? "Publisher expected to emit a value that matches the condition."
@@ -28,19 +28,19 @@ public final class PublisherValueExpectation<Output, Failure: Error>: XCTestExpe
     }
 
     /// Initializes a PublisherValueExpectation that is fulfilled when the publisher emits the expected value.
-    public convenience init(_ publisher: any Publisher<Output, Failure>, expectedValue: Output, description expectationDescription: String? = nil) where Output: Equatable {
+    public convenience init(_ publisher: P, expectedValue: P.Output, description expectationDescription: String? = nil) where P.Output: Equatable {
         let description = expectationDescription ?? "Publisher expected to emit the value '\(expectedValue)'"
         self.init(publisher, condition: { $0 == expectedValue }, description: description)
     }
 }
 
 /// An expectation that is fulfilled when a publisher completes successfully.
-public final class PublisherFinishedExpectation<Output, Failure: Error>: XCTestExpectation {
+public final class PublisherFinishedExpectation<P: Publisher>: XCTestExpectation {
     private var cancellable: AnyCancellable?
     private var isConditionFulfilled = false
 
     /// Initializes a PublisherFinishedExpectation that is fulfilled when the publisher completes successfully.
-    public init(_ publisher: any Publisher<Output, Failure>,
+    public init(_ publisher: P,
                 description expectationDescription: String = "Publisher expected to finish")
     {
         super.init(description: expectationDescription)
@@ -55,8 +55,8 @@ public final class PublisherFinishedExpectation<Output, Failure: Error>: XCTestE
     }
 
     /// Initializes a PublisherFinishedExpectation that is fulfilled when the publisher completes successfully after emitting a value that matches a certain condition.
-    public init(_ publisher: any Publisher<Output, Failure>,
-                condition: @escaping (Output) -> Bool,
+    public init(_ publisher: P,
+                condition: @escaping (P.Output) -> Bool,
                 description expectationDescription: String? = nil)
     {
         let description = expectationDescription ?? "Publisher expected to finish after matching the condition."
@@ -79,7 +79,7 @@ public final class PublisherFinishedExpectation<Output, Failure: Error>: XCTestE
     }
 
     /// Initializes a PublisherFinishedExpectation that is fulfilled when the publisher completes successfully after emitting a certain value.
-    public convenience init(_ publisher: any Publisher<Output, Failure>, expectedValue: Output, description expectationDescription: String? = nil) where Output: Equatable {
+    public convenience init(_ publisher: P, expectedValue: P.Output, description expectationDescription: String? = nil) where P.Output: Equatable {
         let description = expectationDescription ?? "Publisher expected to finish after emitting the value '\(expectedValue)'"
         self.init(publisher, condition: { $0 == expectedValue }, description: description)
     }
