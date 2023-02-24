@@ -94,7 +94,7 @@ let publisherExpectation = PublisherFailureExpectation(publisher) { error in
 
 ## Tips
 
-Thanks to Combine we can adapt the publisher to do many things while keeping the test readability:
+Thanks to Combine we can adapt the publisher to check many things while keeping the test readability:
 
 * Expect many values to be emitted:
 ```swift
@@ -105,4 +105,9 @@ let publisherExpectation = PublisherValueExpectation(publisher.collect(3), expec
 ```swift
 let publisherExpectation = PublisherValueExpectation(publisher.first(), expectedValue: 1)
 let publisherExpectation = PublisherValueExpectation(publisher.last(), expectedValue: 5)
+```
+
+* Expect the second emitted value:
+```swift
+let publisherExpectation = PublisherValueExpectation(publisher.dropFirst().first(), expectedValue: 2)
 ```
