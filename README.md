@@ -92,6 +92,11 @@ let publisherExpectation = PublisherFailureExpectation(publisher) { error in
 }
 ```
 
+* If the expected error conforms to Equatable:
+```swift
+let publisherExpectation = PublisherFailureExpectation(publisher, expectedError: ApiError(code: 100))
+```
+
 ## Installation
 
 1. From the File menu, select Add Packages...
