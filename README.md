@@ -3,11 +3,11 @@ XCTestExpectation subclasses that simplify testing Combine Publishers and help t
 
 ## Motivation
 
-Writing tests for Combine Publishers using `XCTestExpectation` usually involves some boilerplate code such as:
+Writing tests for Combine Publishers (or @Published properties) using `XCTestExpectation` usually involves some boilerplate code such as:
 
 ```swift
 let expectation = XCTestExpectation(description: "Wait for the publisher to emit the expected value")
-publisher.sink { _ in
+viewModel.$output.sink { _ in
 } receiveValue: { value in
     if value == expectedValue {
         expectation.fulfill()
@@ -22,7 +22,7 @@ Another tempting approach would be using `XCTNSPredicateExpectation` like:
 
 ```swift
 let expectation = XCTNSPredicateExpectation(predicate: NSPredicate { _,_ in
-    return viewModel.isLoaded
+    viewModel.output == expectedValue
 }, object: viewModel)
 ```
 
@@ -103,6 +103,6 @@ let publisherExpectation = PublisherValueExpectation(publisher.collect(3), expec
 
 * Expect the first/last emitted value:
 ```swift
-let publisherExpectation1 = PublisherValueExpectation(publisher.first(), expectedValue: 1)
-let publisherExpectation2 = PublisherValueExpectation(publisher.last(), expectedValue: 5)
+let publisherExpectation = PublisherValueExpectation(publisher.first(), expectedValue: 1)
+let publisherExpectation = PublisherValueExpectation(publisher.last(), expectedValue: 5)
 ```
