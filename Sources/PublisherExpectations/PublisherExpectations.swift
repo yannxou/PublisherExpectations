@@ -28,7 +28,9 @@ public final class PublisherValueExpectation<P: Publisher>: XCTestExpectation {
     }
 
     /// Initializes a PublisherValueExpectation that is fulfilled when the publisher emits the expected value.
-    public convenience init(_ publisher: P, expectedValue: P.Output, description expectationDescription: String? = nil) where P.Output: Equatable {
+    public convenience init(_ publisher: P, expectedValue: P.Output,
+                            description expectationDescription: String? = nil) where P.Output: Equatable
+    {
         let description = expectationDescription ?? "Publisher expected to emit the value '\(expectedValue)'"
         self.init(publisher, condition: { $0 == expectedValue }, description: description)
     }
@@ -79,7 +81,9 @@ public final class PublisherFinishedExpectation<P: Publisher>: XCTestExpectation
     }
 
     /// Initializes a PublisherFinishedExpectation that is fulfilled when the publisher completes successfully after emitting a certain value.
-    public convenience init(_ publisher: P, expectedValue: P.Output, description expectationDescription: String? = nil) where P.Output: Equatable {
+    public convenience init(_ publisher: P, expectedValue: P.Output,
+                            description expectationDescription: String? = nil) where P.Output: Equatable
+    {
         let description = expectationDescription ?? "Publisher expected to finish after emitting the value '\(expectedValue)'"
         self.init(publisher, condition: { $0 == expectedValue }, description: description)
     }
