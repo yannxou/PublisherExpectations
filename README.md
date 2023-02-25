@@ -18,6 +18,16 @@ viewModel.$output.sink { _ in
 wait(for: [expectation], timeout: 1)
 ```
 
+We can try using a `XCTKeyPathExpectation` but it requires that the observed object inherits from `NSObject` and also marking the properties we want to observe with both the `@objc` attribute and the `dynamic` modifier to make them KVO-compliant:
+
+```swift
+class ViewModel: NSObject {
+    @objc dynamic var isLoading = false
+}
+
+let expectation = XCTKeyPathExpectation(keyPath: \ViewModel.isLoading, observedObject: viewModel, expectedValue: true)
+```
+
 Another tempting approach would be using `XCTNSPredicateExpectation` like:
 
 ```swift
@@ -26,7 +36,7 @@ let expectation = XCTNSPredicateExpectation(predicate: NSPredicate { _,_ in
 }, object: viewModel)
 ```
 
-The problem with `XCTNSPredicateExpectation` is that is quite slow and best suited for UI tests. This is because it uses some kind of polling mechanism that adds a significant delay of 1 second minimum before the expectation is fulfilled. So it's better not to follow this path in unit tests.
+While this looks nice and compact, the problem with `XCTNSPredicateExpectation` is that is quite slow and best suited for UI tests. This is because it uses some kind of polling mechanism that adds a significant delay of 1 second minimum before the expectation is fulfilled. So it's better not to follow this path in unit tests.
 
 ## Description
 
