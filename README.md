@@ -1,4 +1,8 @@
 # PublisherExpectations
+
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fyannxou%2FPublisherExpectations%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/yannxou/PublisherExpectations)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2Fyannxou%2FPublisherExpectations%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/yannxou/PublisherExpectations)
+
 XCTestExpectation subclasses that simplify testing Combine Publishers and help to improve the readability of unit tests.
 
 ## Motivation
