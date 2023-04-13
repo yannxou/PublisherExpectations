@@ -9,9 +9,15 @@ import XCTest
 import Combine
 @testable import PublisherExpectations
 
+struct SimpleError: Error, Equatable {
+    var code: Int
+}
+
 class PublisherValueExpectationTests: XCTestCase {
     let publisher = [1, 2, 3, 4, 5].publisher
     @Published var value = 0
+
+    // MARK: - Expected success
 
     func testExpectSomeValueToBeEmitted() {
         let expectation = PublisherValueExpectation(publisher, expectedValue: 3)
@@ -49,5 +55,29 @@ class PublisherValueExpectationTests: XCTestCase {
     func testExpectMultipleValues() {
         let expectation = PublisherValueExpectation(publisher.collect(3), expectedValue: [1,2,3])
         wait(for: [expectation], timeout: 0.1)
+    }
+
+    // MARK: - Expected failures
+
+    func testImmediateFailureWhenPublisherFinishesWithoutEmittingExpectedValue() {
+        XCTExpectFailure("PublisherValueExpectation should fail") {
+            let expectation = PublisherValueExpectation(publisher, expectedValue: 100)
+            wait(for: [expectation], timeout: 5)
+        }
+    }
+
+    func testImmediateFailureWhenPublisherFinishesWithoutMatchingCondition() {
+        XCTExpectFailure("PublisherValueExpectation should fail") {
+            let expectation = PublisherValueExpectation(publisher) { $0 > 100 }
+            wait(for: [expectation], timeout: 5)
+        }
+    }
+
+    func testImmediateFailureWhenPublisherFails() {
+        XCTExpectFailure("PublisherValueExpectation should fail") {
+            let failingPublisher = Fail(outputType: Int.self, failure: SimpleError(code: 1300))
+            let expectation = PublisherValueExpectation(failingPublisher, expectedValue: 3)
+            wait(for: [expectation], timeout: 5)
+        }
     }
 }
