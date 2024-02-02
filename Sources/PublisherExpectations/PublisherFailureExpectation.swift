@@ -98,10 +98,13 @@ public final class PublisherFailureExpectation<P: Publisher>: XCTestExpectation 
 
 private extension PublisherFailureExpectation {
     func failureDescription(error: Error?) -> String {
-        if let error {
+        guard let error else {
+            return finishedWithoutFailureDescription
+        }
+        guard let expectedError else {
             return finishedWithFailureDescription(error: error)
         }
-        return finishedWithoutFailureDescription
+        return errorDiffDescription(received: error, expected: expectedError)
     }
 
     func checkImmediateFailure(

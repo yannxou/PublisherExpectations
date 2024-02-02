@@ -98,7 +98,7 @@ public final class PublisherFinishedExpectation<P: Publisher>: XCTestExpectation
         line: UInt = #line
     ) where P.Output: Equatable
     {
-        let description = expectationDescription ?? "Publisher expected to finish after emitting the value '\(expectedValue)'"
+        let description = expectationDescription ?? "Publisher expected to finish after emitting the value:\n\(String(customDumping: expectedValue))"
         self.init(
             publisher,
             condition: { $0 == expectedValue },
