@@ -96,9 +96,7 @@ public final class PublisherFailureExpectation<P: Publisher>: XCTestExpectation 
     }
 }
 
-let finishedWithoutFailureDescription = "Publisher finished without failure"
-
-extension PublisherFailureExpectation {
+private extension PublisherFailureExpectation {
     func failureDescription(error: Error?) -> String {
         if let error {
             return finishedWithFailureDescription(error: error)

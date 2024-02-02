@@ -110,11 +110,7 @@ public final class PublisherFinishedExpectation<P: Publisher>: XCTestExpectation
     }
 }
 
-func finishedWithFailureDescription(error: Error) -> String {
-    "Publisher finished with error:\n\(String(customDumping: error))"
-}
-
-extension PublisherFinishedExpectation {
+private extension PublisherFinishedExpectation {
     func failureDescription(error: Error?) -> String {
         if let error {
             return finishedWithFailureDescription(error: error)

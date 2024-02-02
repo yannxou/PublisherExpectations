@@ -77,23 +77,7 @@ public final class PublisherValueExpectation<P: Publisher>: XCTestExpectation {
     }
 }
 
-func receivedValuesDiffDescription<T>(received: [T], expected: T) -> String {
-    """
-    Values emitted diffing the expected one:
-      \(diff(Array(repeating: expected, count: received.count), received)!)
-    """
-}
-
-func receivedValuesDescription<T>(received: [T]) -> String {
-    """
-    Values emitted:
-      \(String(customDumping: received))
-    """
-}
-
-let emptyValuesDescription = "No value was emitted by the publisher"
-
-extension PublisherValueExpectation {
+private extension PublisherValueExpectation {
     var failureDescription: String {
         guard !receivedValues.isEmpty else { 
             return emptyValuesDescription
