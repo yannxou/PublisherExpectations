@@ -77,8 +77,8 @@ public final class PublisherValueExpectation<P: Publisher>: XCTestExpectation {
     }
 }
 
-private extension PublisherValueExpectation {
-    var failureDescription: String {
+extension PublisherValueExpectation: PublisherExpectation {
+    func failureDescription(error: Error?) -> String {
         guard !receivedValues.isEmpty else { 
             return emptyValuesDescription
         }
@@ -89,17 +89,6 @@ private extension PublisherValueExpectation {
             )
         } else {
             receivedValuesDescription(received: receivedValues)
-        }
-    }
-
-    func checkImmediateFailure(file: StaticString, line: UInt) {
-        let description = self.description + "\n\n" + failureDescription
-        // Add small delay to allow effectively setting isInverted property from outside
-        DispatchQueue.main.async {
-            if !self.isInverted {
-                XCTFail(description, file: file, line: line)
-                self.fulfill()  // required to break the `wait()` in the test and skip the timeout
-            }
         }
     }
 }
